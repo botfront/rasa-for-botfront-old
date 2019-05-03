@@ -1,0 +1,17 @@
+FROM rasa/rasa_core_sdk:0.12.1
+
+# To install system dependencies
+#RUN apt-get update -qq && \
+#    apt-get install -y <NAME_OF_REQUIRED_PACKAGE> && \
+#    apt-get clean && \
+#    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# To install packages from PyPI
+#RUN pip install --no-cache-dir <A_REQUIRED_PACKAGE_ON_PYPI>
+RUN pip install -r requirements.txt --no-cache-dir
+# Since  /app/actions is a volume in rasa/rasa_core_sdk it's not possible to add files in it later (custom actions)
+# To allow that, we copy the actions in a `the_actions` folder we'll be abloe to manipulate when this image is used in FROM
+COPY ./actions /app/the_actions
+# For some mysterious reason, files are not copied unless the following ls directive is exectuted
+RUN ls /app/the_actions
+CMD ["start", "--actions", "the_actions"]

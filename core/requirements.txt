@@ -1,0 +1,11 @@
+requests
+grequests
+google-cloud-logging
+jsonpickle
+rasa-core>=0.13.0,<0.14
+rasa-addons>=0.5.9,<0.6
+arrow
+jsonmerge
+python-socketio
+requests_futures
+pyOpenSSL
