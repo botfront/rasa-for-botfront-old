@@ -10,7 +10,7 @@ steps:
           "-f", "Dockerfile_core",
           "-t", "botfront/rasa-core-bf:$TAG_NAME",
           "-t", "botfront/rasa-core-bf:latest",
-          "--cache-from", "gcr.io/$PROJECT_ID/simple-core:latest",
+          "--cache-from", "botfront/rasa-core-bf:latest",
           "."]
 
 - name: 'gcr.io/cloud-builders/docker'
@@ -21,10 +21,24 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   args: [ "build",
+          "-f", "Dockerfile_nlu",
+          "-t", "botfront/rasa-nlu-bf:$TAG_NAME",
+          "-t", "botfront/rasa-nlu-bf:latest",
+          "--cache-from", "botfront/rasa-nlu-bf:latest",
+          "."]
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ "push", "botfront/rasa-nlu-bf:$TAG_NAME"]
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ "push", "botfront/rasa-nlu-bf:latest"]
+
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ "build",
           "-f", "Dockerfile_actions",
           "-t", "botfront/simple-actions:$TAG_NAME",
           "-t", "botfront/simple-actions:latest",
-          "--cache-from", "gcr.io/$PROJECT_ID/simple-actions:latest",
+          "--cache-from", "botfront/simple-actions:latest",
           "."]
 
 - name: 'gcr.io/cloud-builders/docker'
@@ -33,18 +47,5 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ "push", "botfront/simple-actions:latest"]
 
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ "build",
-          "-f", "Dockerfile_nlu",
-          "-t", "botfront/rasa-nlu-bf:$TAG_NAME",
-          "-t", "botfront/rasa-nlu-bf:latest",
-          "--cache-from", "gcr.io/$PROJECT_ID/simple-nlu:latest",
-          "."]
-
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ "push", "botfront/rasa-nlu-bf:$TAG_NAME"]
-
-- name: 'gcr.io/cloud-builders/docker'
-  args: [ "push", "botfront/rasa-nlu-bf:latest"]
 
 timeout: 1800s
