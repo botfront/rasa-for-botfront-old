@@ -22,6 +22,8 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: [ "build",
           "-f", "Dockerfile_actions",
+          "-t", "botfront/simple-actions:$TAG_NAME",
+          "-t", "botfront/simple-actions:latest",
           "--cache-from", "gcr.io/$PROJECT_ID/simple-actions:latest",
           "."]
 
